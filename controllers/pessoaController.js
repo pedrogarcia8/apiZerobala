@@ -103,7 +103,7 @@ module.exports = function(app){
 
 	app.post('/login', function(req, res, next){
 
-		req.assert("cpf", "CPF obrigatorio").notEmpty();
+		req.assert("email", "Email obrigatorio").notEmpty();
 		req.assert("senha", "Senha obrigatoria").notEmpty();
 
 		var erros = req.validationErrors();
@@ -115,8 +115,8 @@ module.exports = function(app){
 		}
 
 		var dados = req.body;
-
-		pessoaModel.buscaPorCpf(dados.cpf, function(erro, resultado){
+		
+		pessoaModel.buscaPorEmail(dados.email, function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
@@ -131,11 +131,11 @@ module.exports = function(app){
 				if(result){
 					const token = jwt.sign({
 						id_usuario : resultado[0].idPessoa,
-						cpf: resultado[0].cpf
+						email: resultado[0].email
 					},
 					"Z35I-S8K5-M7AW-1Y36-VH09",
 					{
-						expiresIn: "6h"
+						expiresIn: "12h"
 					});
 					res.status(200).send({ mensagem: 'Autenticado',
 										   token: token });

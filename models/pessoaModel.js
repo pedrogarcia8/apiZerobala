@@ -18,6 +18,11 @@ pessoaModel.prototype.buscaPorCpf = function(cpf, callback){
 	this._connection.query('SELECT * FROM pessoa WHERE cpf = ?',[cpf],callback);
 }
 
+pessoaModel.prototype.buscaPorEmail = function(email, callback){
+	this._connection.query('SELECT * FROM pessoa WHERE email = ?',[email],callback);
+}
+
+
 pessoaModel.prototype.deleta = function(cpf, callback){
 	this._connection.query('DELETE FROM pessoa WHERE cpf = ?',[cpf],callback);
 }
