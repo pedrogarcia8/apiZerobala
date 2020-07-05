@@ -7,11 +7,11 @@ var login = require('../servicos/login.js');
 module.exports = function(app){
 
 	var connection = app.servicos.connectionDB();
-	var pessoaModel = new app.models.pessoaModel(connection);
+	var usuarioModel = new app.models.usuarioModel(connection);
 
-	app.get('/pessoas', function(req, res){
+	app.get('/usuarios', login.obrigatorio, function(req, res){
 
-		pessoaModel.lista(function(erro, resultado){
+		usuarioModel.lista(function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
@@ -23,11 +23,11 @@ module.exports = function(app){
 	});
 
 
-	app.get('/pessoa/:cpf', function(req, res){
+	app.get('/usuario/:cpf', function(req, res){
 		
 		var cpf = req.params.cpf;
 
-		pessoaModel.buscaPorCpf(cpf, function(erro, resultado){
+		usuarioModel.buscaPorCpf(cpf, function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
@@ -38,38 +38,26 @@ module.exports = function(app){
 		});
 	});
 
-	app.delete('/pessoa/:cpf', function(req, res){
 
-		var cpf = req.params.cpf;
+	app.patch('/usuario', function(req, res){
 
-		pessoaModel.deleta(cpf, function(erro){
+		var usuario = req.body;
+
+		usuarioModel.atualizaNome(usuario, function(erro){
 			if(erro){
 				res.status(500).send(erro);
 				return;
 			}
-			res.status(202).send(cpf);
-		});
-	});
-
-	app.patch('/pessoa/:cpf', function(req, res){
-
-		var pessoa = req.body;
-
-		pessoaModel.atualizaNome(pessoa, function(erro){
-			if(erro){
-				res.status(500).send(erro);
-				return;
-			}
-			res.status(200).send(pessoa);
+			res.status(200).send(usuario);
 		});
 
 	});
 
-	app.post('/pessoa', function(req, res){
+	app.post('/usuario', function(req, res){
 		
 		req.assert("cpf", "CPF obrigatorio").notEmpty();
 		req.assert("nome", "Nome obrigatorio").notEmpty();
-		req.assert("celular", "Celular obrigatorio").notEmpty();
+		req.assert("email", "Email obrigatorio").notEmpty();
 		req.assert("senha", "Senha obrigatoria").notEmpty();
 
 		var erros = req.validationErrors();
@@ -80,21 +68,21 @@ module.exports = function(app){
 			return;
 		}
 
-		var pessoa = req.body;
-		bcrypt.hash(pessoa.senha, 10, function(erroBcrypt, hash){
+		var usuario = req.body;
+		bcrypt.hash(usuario.senha, 10, function(erroBcrypt, hash){
 			if(erroBcrypt){
 				console.log('Erro de cripografia ' + erroBcrypt);
 				res.status(500).send(erroBcrypt);
 				return;
 			}
-			pessoa.senha = hash;
+			usuario.senha = hash;
 
-			pessoaModel.insere(pessoa, function(erro, resultado){
+			usuarioModel.insere(usuario, function(erro, resultado){
 				if(erro){
 					console.log('Erro ao inserir no banco' + erro);
 					res.status(500).send(erro);
 				}else{
-					res.status(201).json(pessoa);	
+					res.status(201).json(usuario);	
 				}
 			
 			});
@@ -116,7 +104,7 @@ module.exports = function(app){
 
 		var dados = req.body;
 		
-		pessoaModel.buscaPorEmail(dados.email, function(erro, resultado){
+		usuarioModel.buscaPorEmail(dados.email, function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
@@ -130,15 +118,14 @@ module.exports = function(app){
 				}
 				if(result){
 					const token = jwt.sign({
-						id_usuario : resultado[0].idPessoa,
+						codUsuario : resultado[0].codUsuario,
 						email: resultado[0].email
 					},
 					"Z35I-S8K5-M7AW-1Y36-VH09",
 					{
 						expiresIn: "12h"
 					});
-					res.status(200).send({ mensagem: 'Autenticado',
-										   token: token });
+					res.status(200).set('x-access-token', token).send({ mensagem: 'Autenticado',token: token });
 					return;
 				}
 				res.status(401).send({ mensagem: 'Falha na autenticacao'});
