@@ -19,10 +19,26 @@ module.exports = function(app){
 		})
 	});
 
-	app.get('/fluxoCaixaPlataforma/:codUsuario/:tipo', function(req, res){
+	app.get('/fluxoCaixaEntrada/:codUsuario', function(req, res){
 
 		var codUsuario = req.params.codUsuario;
-		var tipo = req.params.tipo;
+		var tipo = 'E';
+
+		fluxoCaixaModel.buscaPorTipoComPlataforma(codUsuario, tipo,function(erro, resultado){
+			if(erro){
+				console.log('erro ao consultar no banco: ' + erro);
+				res.status(500).send(erro);
+				return;
+			}
+			res.json(resultado);
+			return;
+		})
+	});
+
+	app.get('/fluxoCaixaSaida/:codUsuario', function(req, res){
+
+		var codUsuario = req.params.codUsuario;
+		var tipo = 'S';
 
 		fluxoCaixaModel.buscaPorTipoComPlataforma(codUsuario, tipo,function(erro, resultado){
 			if(erro){

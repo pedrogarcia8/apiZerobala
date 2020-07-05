@@ -231,3 +231,5 @@
 {"message":"::1 - - [05/Jul/2020:23:39:32 +0000] \"GET /pedidoNF/8 HTTP/1.1\" 200 698\n","level":"info"}
 {"message":"::1 - - [05/Jul/2020:23:39:45 +0000] \"GET /pedidoNF/1 HTTP/1.1\" 200 2\n","level":"info"}
 {"message":"::1 - - [05/Jul/2020:23:39:49 +0000] \"GET /pedidoNF HTTP/1.1\" 404 147\n","level":"info"}
+{"message":"::1 - - [05/Jul/2020:23:50:42 +0000] \"GET /fluxoCaixaPlataforma/8/E HTTP/1.1\" 200 332\n","level":"info"}
+{"message":"::1 - - [05/Jul/2020:23:52:29 +0000] \"GET /fluxoCaixaPlataforma/8/E HTTP/1.1\" 200 332\n","level":"info"}
