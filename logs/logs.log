@@ -184,3 +184,6 @@
 {"message":"::1 - - [05/Jul/2020:17:30:42 +0000] \"POST /login HTTP/1.1\" 200 216\n","level":"info"}
 {"message":"::1 - - [05/Jul/2020:17:35:23 +0000] \"POST /login HTTP/1.1\" 200 216\n","level":"info"}
 {"message":"::1 - - [05/Jul/2020:17:35:47 +0000] \"POST /login HTTP/1.1\" 200 216\n","level":"info"}
+{"message":"::1 - - [05/Jul/2020:18:24:16 +0000] \"GET /usuarios HTTP/1.1\" 401 36\n","level":"info"}
+{"message":"::1 - - [05/Jul/2020:18:27:58 +0000] \"POST /login HTTP/1.1\" 200 216\n","level":"info"}
+{"message":"::1 - - [05/Jul/2020:18:28:22 +0000] \"GET /usuarios HTTP/1.1\" 200 1068\n","level":"info"}

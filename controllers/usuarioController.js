@@ -9,7 +9,7 @@ module.exports = function(app){
 	var connection = app.servicos.connectionDB();
 	var usuarioModel = new app.models.usuarioModel(connection);
 
-	app.get('/usuarios', login.obrigatorio, function(req, res){
+	app.get('/usuarios', function(req, res){
 
 		usuarioModel.lista(function(erro, resultado){
 			if(erro){
