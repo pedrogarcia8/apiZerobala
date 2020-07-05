@@ -19,7 +19,7 @@ pedidoModel.prototype.buscaPorCodUsuario = function(codUsuarioPedido, callback){
 }
 
 pedidoModel.prototype.buscaPedidoNF = function(codUsuarioPedido, callback){
-	this._connection.query('SELECT a.codPedido, a.dataCriado,a.codCliente,b.nomePlataforma,a.total,a.codNFPedido,c.dataEmissao,a.etiquetaGerada,d.nomeProduto,d.preco,e.imagemBin,f.quantidade FROM Pedido a INNER JOIN ProdutoPedido f ON (a.codPedido = f.codPedidoPP) INNER JOIN Produto d ON (f.codProdutoPP = d.codProduto) INNER JOIN Estoque g ON (d.codProduto = g.codProdutoEstoque) INNER JOIN Plataforma b ON (g.codPlataformaEstoque = b.codPlataforma) LEFT  JOIN NotaFiscal c ON (a.codNFPedido = c.codNF) LEFT  JOIN Imagem e ON (d.codProduto = e.codProduto) WHERE codUsuarioPedido = ?',
+	this._connection.query('SELECT a.codPedido, a.dataCriado, a.codCliente, b.nomePlataforma, a.total, a.codNFPedido, c.dataEmissao, a.etiquetaGerada, d.nomeProduto, d.preco, e.imagemBin, f.quantidade FROM Pedido a INNER JOIN ProdutoPedido f ON (a.codPedido = f.codPedidoPP) INNER JOIN Produto d ON (f.codProdutoPP = d.codProduto) INNER JOIN Plataforma b ON (a.codPlataformaPedido = b.codPlataforma) LEFT JOIN NotaFiscal c ON (a.codNFPedido = c.codNF) LEFT JOIN Imagem e ON (d.codProduto = e.codProduto) WHERE codUsuarioPedido = ?',
 						   [codUsuarioPedido],callback);
 }
 
