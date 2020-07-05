@@ -8,7 +8,9 @@ module.exports = function(app){
 
 	app.get('/produtos', function(req, res){
 
-		produtoModel.lista(function(erro, resultado){
+		var ativo = 'S';
+
+		produtoModel.lista(ativo,function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
@@ -20,26 +22,12 @@ module.exports = function(app){
 	});
 
 
-	app.get('/produto/:codProduto', function(req, res){
-		
-		var codProduto = req.params.codProduto;
-
-		produtoModel.buscaPorCodProduto(codProduto, function(erro, resultado){
-			if(erro){
-				console.log('erro ao consultar no banco: ' + erro);
-				res.status(500).send(erro);
-				return;
-			}
-			res.json(resultado);
-			return;
-		});
-	});
-
 	app.get('/produtos/:codUsuarioProduto', function(req, res){
 		
 		var codUsuarioProduto = req.params.codUsuarioProduto;
+		var ativo = 'S';
 
-		produtoModel.buscaPorCodUsuario(codUsuarioProduto, function(erro, resultado){
+		produtoModel.buscaPorCodUsuario(codUsuarioProduto, ativo, function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
@@ -50,28 +38,25 @@ module.exports = function(app){
 		});
 	});
 
-	app.patch('/atualizaStatusPedido', function(req, res){
+	app.put('/atualizaProduto', function(req, res){
 
-		var pedido = req.body;
+		var produto = req.body;
 
-		produtoModel.atualizaStatusPedido(pedido, function(erro){
+		produtoModel.atualizaStatusPedido(produto, function(erro){
 			if(erro){
 				res.status(500).send(erro);
 				return;
 			}
-			res.status(200).send(pedido);
+			res.status(200).send(produto);
 		});
 
 	});
 
-	app.post('/pedido', function(req, res){
+	app.post('/produto', function(req, res){
 		
-		req.assert("codCliente", "código do cliente obrigatório").notEmpty();
-		req.assert("dataCriado", "data de criação obrigatório").notEmpty();
-		req.assert("total", "Total do pedido obrigatório").notEmpty();
-		req.assert("status", "Status do pedido obrigatório").notEmpty();
-		req.assert("etiquetaGerada", "Etiqueta gerada obrigatório").notEmpty();
-		req.assert("codUsuarioPedido", "Código do usuário obrigatório").notEmpty();
+		req.assert("codProduto", "código do produto obrigatório").notEmpty();
+		req.assert("nomeProduto", "nome do produto obrigatório").notEmpty();
+		req.assert("preco", "Preço do produto obrigatório").notEmpty();
 
 		var erros = req.validationErrors();
 
@@ -81,14 +66,15 @@ module.exports = function(app){
 			return;
 		}
 
-		var pedido = req.body;
+		var produto = req.body;
+			produto.ativo = 'S';
 		
-		produtoModel.insere(pedido, function(erro, resultado){
+		produtoModel.insere(produto, function(erro, resultado){
 			if(erro){
 				console.log('Erro ao inserir no banco' + erro);
 				res.status(500).send(erro);
 			}else{
-				res.status(201).json(pedido);	
+				res.status(201).json(produto);	
 			}
 		});
 	});

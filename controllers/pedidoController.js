@@ -50,6 +50,21 @@ module.exports = function(app){
 		});
 	});
 
+	app.get('/pedidoNF/:codUsuarioPedido', function(req, res){
+		
+		var codUsuarioPedido = req.params.codUsuarioPedido;
+
+		pedidoModel.buscaPedidoNF(codUsuarioPedido, function(erro, resultado){
+			if(erro){
+				console.log('erro ao consultar no banco: ' + erro);
+				res.status(500).send(erro);
+				return;
+			}
+			res.json(resultado);
+			return;
+		});
+	});
+
 	app.patch('/atualizaStatusPedido', function(req, res){
 
 		var pedido = req.body;

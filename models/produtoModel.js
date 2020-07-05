@@ -6,16 +6,13 @@ produtoModel.prototype.insere = function(produto, callback){
 	this._connection.query('INSERT INTO Produto SET ?',produto, callback);	
 }
 
-produtoModel.prototype.lista = function(callback){
-	this._connection.query('SELECT * FROM Produto',callback);
+produtoModel.prototype.lista = function(ativo,callback){
+	this._connection.query('SELECT * FROM Produto WHERE ativo = ?',[ativo],callback);
 }
 
-produtoModel.prototype.buscaPorCodproduto = function(codproduto, callback){
-	this._connection.query('SELECT * FROM Produto WHERE codproduto = ?',[codproduto],callback);
-}
 
-produtoModel.prototype.buscaPorCodUsuario = function(codUsuarioProduto, callback){
-	this._connection.query('SELECT * FROM Produto WHERE codUsuarioProduto = ?',[codUsuarioProduto],callback);
+produtoModel.prototype.buscaPorCodUsuario = function(codUsuarioProduto,ativo, callback){
+	this._connection.query('SELECT * FROM Produto WHERE codUsuarioProduto = ? AND ativo = ?',[codUsuarioProduto,ativo],callback);
 }
 
 produtoModel.prototype.atualizaProduto = function(produto, callback){
