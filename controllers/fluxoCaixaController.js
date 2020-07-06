@@ -19,12 +19,12 @@ module.exports = function(app){
 		})
 	});
 
-	app.get('/fluxoCaixaEntrada/:codUsuario', function(req, res){
+	app.get('/fluxoCaixaEntrada/:codUsuarioFC', function(req, res){
 
-		var codUsuario = req.params.codUsuario;
+		var codUsuarioFC = req.params.codUsuarioFC;
 		var tipo = 'E';
 
-		fluxoCaixaModel.buscaPorTipoComPlataforma(codUsuario, tipo,function(erro, resultado){
+		fluxoCaixaModel.buscaPorTipoComPlataforma(codUsuarioFC, tipo,function(erro, resultado){
 			if(erro){
 				console.log('erro ao consultar no banco: ' + erro);
 				res.status(500).send(erro);
